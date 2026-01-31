@@ -1,0 +1,123 @@
+<div class="page-header">
+  <h2>Return Book</h2>
+</div>
+
+<div class="main-content row justify-content-center">
+  <div class="col-lg-10 col-md-12">
+    <div class="card-custom">
+      <form method="POST" action="#" class="needs-validation" novalidate>
+        <!-- Title -->
+        <div class="mb-3 mt-3">
+          <label for="accession_no" class="form-label">Accession Number</label>
+          <input
+            type="text"
+            id="accession_no"
+            class="form-control"
+            required
+            placeholder="Enter book title"
+          />
+          <div class="invalid-feedback">Please Enter Accession Number</div>
+        </div>
+
+        <div class="mb-3 mt-3">
+          <label for="title" class="form-label">Title</label>
+          <input
+            type="text"
+            id="title"
+            class="form-control"
+            disabled
+            placeholder="book title"
+          />
+          <div class="invalid-feedback">Please Enter Title</div>
+        </div>
+
+        <!-- Author, Copies, ISBN -->
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="stu_nm" class="form-label">Student Name :</label>
+            <input
+              id="stu_nm"
+              type="text"
+              class="form-control"
+              disabled
+              placeholder="Student Roll Number"
+            />
+          </div>
+          <div class="mb-3 col-md-4">
+            <label for="stu_dpt" class="form-label">Student Department</label>
+            <input
+              id="stu_dpt"
+              class="form-control"
+              disabled
+              placeholder="Student Department"
+            />
+          </div>
+          <div class="mb-3 col-md-4">
+            <label for="stu_enroll" class="form-label"
+              >Student Enrollment Number</label
+            >
+            <select id="stu_enroll" class="form-control" required>
+              <option value="" selected disabled>
+                Select Enrollment Number
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Category, Publisher, Year -->
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="stu_yr" class="form-label">Student Year</label>
+            <input
+              id="stu_yr"
+              class="form-control"
+              disabled
+              placeholder="Student Year"
+            />
+          </div>
+          <div class="mb-3 col-md-4">
+            <label for="issued_date" class="form-label">Issued Date</label>
+            <input
+              id="issued_date"
+              class="form-control"
+              disabled
+              placeholder="Student Year"
+            />
+          </div>
+          <div class="mb-3 col-md-4">
+            <label for="return_date" class="form-label">Return Date</label>
+            <input
+              id="return_date"
+              class="form-control"
+              disabled
+              placeholder="Student Year"
+            />
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="gap-2 d-md-flex justify-content-md-end">
+          <!-- Add Book BUTTON (Submit) -->
+          <button
+            type="button"
+            id="file-return"
+            class="btn btn-primary btn-primary-custom text-white gap-5"
+          >
+            Return Book
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Success/Error Message -->
+<div id="upload-message" class="upload-message hidden">
+  <div class="message-content">
+    <span class="message-icon" id="message-icon">✓</span>
+    <div class="message-text">
+      <h4 id="message-title">Success!</h4>
+      <p id="message-description">Book details loaded successfully.</p>
+    </div>
+  </div>
+</div>

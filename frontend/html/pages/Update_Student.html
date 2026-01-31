@@ -1,0 +1,109 @@
+<div class="page-header">
+  <h2>Update Student</h2>
+</div>
+
+<div class="main-content row justify-content-center">
+  <div class="col-lg-10 col-md-12">
+    <div class="card-custom">
+      <form method="POST" action="#" class="needs-validation" novalidate>
+        <!-- Title -->
+        <div class="mb-3 mt-3">
+          <label for="accession_no" class="form-label"
+            >Student Roll Number:</label
+          >
+          <input
+            type="text"
+            id="stu_roll"
+            class="form-control"
+            required
+            placeholder="Enter Student Roll Number"
+          />
+          <div class="invalid-feedback">Please Enter Student Roll Number</div>
+        </div>
+
+        <!-- Email and  Name Row -->
+
+        <div class="mb-3 col-md-6">
+          <label for="stu_name" class="form-label">Student Name:</label>
+          <input
+            type="text"
+            id="stu_name"
+            class="form-control"
+            disabled
+            placeholder="Student Name"
+          />
+        </div>
+
+        <!-- Author, Copies, ISBN -->
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="stu_yr" class="form-label">Student Year :</label>
+            <select id="stu_yr" class="form-control" disabled>
+              <option value="" disabled>Select Student Year</option>
+              <option value="1">1st Year</option>
+              <option value="2">2nd Year</option>
+              <option value="3">3rd Year</option>
+            </select>
+          </div>
+          <div class="mb-3 col-md-4">
+            <label for="stu_dpt" class="form-label">Student Department</label>
+            <select id="stu_dpt" class="form-control" disabled>
+              <option value="" disabled>Select Student Department</option>
+              <option value="CO">Computer</option>
+              <option value="it">IT</option>
+              <option value="ai">AI</option>
+              <option value="me">Mechanical</option>
+              <option value="ci">Civil</option>
+              <option value="ee">Electronics</option>
+              <option value="ele">Electrical</option>
+              <option value="ddgm">Dress Designing</option>
+              <option value="auto">Automobile</option>
+            </select>
+          </div>
+          <div class="mb-3 col-md-4">
+            <label for="stu_ph" class="form-label">Student Phone Number:</label>
+            <input
+              id="stu_ph"
+              class="form-control"
+              disabled
+              placeholder="Student Phone Number"
+            />
+          </div>
+        </div>
+        <div class="mb-3 col-md-6">
+          <label for="stu_email" class="form-label">Student Email:</label>
+          <input
+            id="stu_email"
+            type="email"
+            class="form-control"
+            disabled
+            placeholder="Student Email"
+          />
+        </div>
+
+        <!-- Submit Button -->
+        <div class="gap-2 d-md-flex justify-content-md-end">
+          <!-- Add Book BUTTON (Submit) -->
+          <button
+            type="button"
+            id="update-student"
+            class="btn btn-primary btn-primary-custom text-white gap-5"
+          >
+            Update
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Success/Error Message -->
+<div id="upload-message" class="upload-message hidden">
+  <div class="message-content">
+    <span class="message-icon" id="message-icon">✓</span>
+    <div class="message-text">
+      <h4 id="message-title">Success!</h4>
+      <p id="message-description">Book details loaded successfully.</p>
+    </div>
+  </div>
+</div>

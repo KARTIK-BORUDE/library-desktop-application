@@ -1,0 +1,120 @@
+<div class="page-header">
+    <h2>Add Student</h2>
+
+</div>
+<div>
+    <div class="main-content row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+            <div class="card-custom">
+
+                <form method="POST" action="#" class="needs-validation" novalidate>
+                    <!-- Title -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Student Name</label>
+                        <input type="text" id="name" class="form-control" required placeholder="Enter Student Name">
+                        <div class="invalid-feedback">
+                            Please Enter Student Name
+                        </div>
+                    </div>
+
+
+                    <!-- Author, Copies, ISBN -->
+                    <div class="row">
+                        <div class=" col-md-4 mb-3">
+                            <label for="enrollment_no" class="form-label">Student Roll Number</label>
+                            <input id="enrollment_no" type="number" class="form-control" required
+                                placeholder="Enter Student Roll Number">
+                            <div class="invalid-feedback">
+                                Please Enter Student Roll Number
+                            </div>
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label for="department" class="form-label">Student Department</label>
+                            <select id="department" class="form-select" required>
+                                <option value="" selected disabled>Select Student Department</option>
+                                <option value="CO">Computer</option>
+                                <option value="it">IT</option>
+                                <option value="ai">AI</option>
+                                <option value="me">Mechanical</option>
+                                <option value="ci">Civil</option>
+                                <option value="ee">Electronics</option>
+                                <option value="ele">Electrical</option>
+                                <option value="ddgm">Dress Designing</option>
+                                <option value="auto">Automobile</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please Enter Student Department
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="phone" class="form-label">Student Phone Number</label>
+                            <input id="phone" type="text" class="form-control" required
+                                placeholder="Enter Student Phone Number">
+                            <div class="invalid-feedback">
+                                Please Enter Student Phone Number
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Category, Publisher, Year -->
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="year" class="form-label">Student Year</label>
+                            <select id="year" class="form-select" required>
+                                <option value="" selected disabled>Select Student Year</option>
+                                <option value="1">1st Year</option>
+                                <option value="2">2nd Year</option>
+                                <option value="3">3rd Year</option>
+
+
+                            </select>
+                            <div class="invalid-feedback">
+                                Please Select Year
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="email" class="form-label">Student Email</label>
+                            <input id="email" type="email" class="form-control" required
+                                placeholder="Enter Student Email">
+                            <div class="invalid-feedback">
+                                Please Enter Student Email
+                            </div>
+                        </div>
+
+
+
+                        <div class="invalid-feedback">
+                            Please Select Year
+                        </div>
+                    </div>
+
+
+            </div>
+
+
+            <!-- Submit Button -->
+            <div class="gap-2 d-md-flex justify-content-md-end">
+
+
+
+                <!-- Add Book BUTTON (Submit) -->
+                <button type="button" id="add-student-btn" class="btn btn-primary btn-primary-custom text-white gap-5">
+                    Add Student
+                </button>
+
+            </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Success/Error Message -->
+<div id="upload-message" class="upload-message hidden">
+    <div class="message-content">
+        <span class="message-icon" id="message-icon">✓</span>
+        <div class="message-text">
+            <h4 id="message-title">Upload Successful!</h4>
+            <p id="message-description">Records have been added to the database.</p>
+        </div>
+    </div>
+</div>

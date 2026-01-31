@@ -1,0 +1,36 @@
+<div class="page-header">
+  <h2>Students</h2>
+  <div class="search-bar">
+    <input type="text" placeholder="Search..." id="search-input" />
+    <span class="search-icon">🔍</span>
+  </div>
+  <button class="btn-primary new-student new-student">New Student</button>
+</div>
+<div class="card-container">
+  <table class="table overflow-auto">
+    <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Enrollment No</th>
+        <th>Student Dept</th>
+        <th>Year</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+</div>
+
+<!-- Success/Error Message -->
+<div id="upload-message" class="upload-message hidden">
+  <div class="message-content">
+    <span class="message-icon" id="message-icon">✓</span>
+    <div class="message-text">
+      <h4 id="message-title">Success!</h4>
+      <p id="message-description">Operation completed successfully.</p>
+    </div>
+  </div>
+</div>

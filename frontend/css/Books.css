@@ -1,0 +1,92 @@
+/* Pagination Container */
+.pagination-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 32px;
+    padding: 20px;
+}
+
+/* Base Button Styles */
+.pagination-btn,
+.page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    background-color: #ffffff;
+    color: var(--text-secondary);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+}
+
+/* SVG Icon Styling */
+.pagination-btn svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+    fill: currentColor;
+}
+
+/* Hover States */
+.pagination-btn:hover,
+.page:hover {
+    background-color: #f8fafc;
+    color: var(--primary-color, #2563eb);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.1),
+        0 4px 6px -2px rgba(37, 99, 235, 0.05);
+
+}
+
+/* Active/Selected Page State */
+.page.active {
+    background: linear-gradient(135deg, var(--primary-color, #2563eb) 0%, var(--primary-hover, #1d4ed8) 100%);
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+    transform: scale(1.05);
+    transform: translateY(-10px);
+}
+
+.page.active:hover {
+    transform: translateY(0);
+    /* Don't move the active page button on hover */
+}
+
+/* Button Click Effect */
+.pagination-btn:active,
+.page:active {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Arrow Animation on Hover */
+.pagination-btn:first-child:hover svg {
+    transform: translateX(-3px);
+}
+
+.pagination-btn:last-child:hover svg {
+    transform: translateX(3px);
+}
+
+/* Disabled State (if needed in future) */
+.pagination-btn:disabled,
+.page:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}

@@ -1,0 +1,32 @@
+<header class="top-header return-header">
+  <h1>Issued Books</h1>
+  <button class="btn-primary return-btn">File Return</button>
+</header>
+
+<div class="card-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Book Title</th>
+        <th>Student Name</th>
+        <th>Student Enrollment No</th>
+        <th>Student Year</th>
+        <th>Student Dept</th>
+        <th>Issue Date</th>
+        <th>Return Date</th>
+        <th>Return Status</th>
+      </tr>
+    </thead>
+    <tbody id="return-data"></tbody>
+  </table>
+</div>
+<!-- Success/Error Message -->
+<div id="upload-message" class="upload-message hidden">
+  <div class="message-content">
+    <span class="message-icon" id="message-icon">✓</span>
+    <div class="message-text">
+      <h4 id="message-title">Success!</h4>
+      <p id="message-description">Operation completed successfully.</p>
+    </div>
+  </div>
+</div>

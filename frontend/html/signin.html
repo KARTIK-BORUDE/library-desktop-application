@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="../css/login.css" />
+  <link rel="stylesheet" href="../css/upload-excel.css" />
+</head>
+
+<body>
+  <div class="background-animation">
+    <div class="book-icon">📖</div>
+    <div class="book-icon">📚</div>
+    <div class="book-icon">📘</div>
+    <div class="book-icon">📙</div>
+    <div class="book-icon">📖</div>
+    <div class="book-icon">📚</div>
+    <div class="book-icon">📗</div>
+  </div>
+  <div id="login_box" class="login_box">
+    <div class="login_cantainer">
+      <div class="logo">
+        <img src="../Assets/logo.jpeg" alt="College Logo" style="border-radius: 0%;
+    border: none;">
+      </div>
+
+      <div class="title">
+        <h1>Library Management System Sign Up</h1>
+        <h4>Create your account</h4>
+      </div>
+
+      <div class="login-form">
+        <form class="form">
+          <label for="name">Username</label>
+          <input type="text" placeholder="Choose a username" class="name" id="name" />
+
+          <label for="pass">Password</label>
+          <input type="password" placeholder="Choose a password" class="pass" id="pass" />
+
+          <button type="button" class="login-btn">Sign Up</button>
+          <p style="text-align: center">
+            Back To Login? <a href="../html/login.html">Login</a>
+          </p>
+        </form>
+      </div>
+      <div class="footer">
+        <p>Developed And Maintained By : <strong>Kartik Borude</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success/Error Message -->
+  <div id="upload-message" class="upload-message hidden">
+    <div class="message-content">
+      <span class="message-icon" id="message-icon">✓</span>
+      <div class="message-text">
+        <h4 id="message-title">Sign Up Error </h4>
+        <p id="message-description">
+
+        </p>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="../js/index.js"></script>
+  <script src="../js/signup.js"></script>
+</body>
+
+</html>

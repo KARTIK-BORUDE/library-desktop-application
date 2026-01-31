@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' data:;
+    font-src 'self';
+    connect-src 'self';
+    "> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library Management System</title>
+    <!-- font Awesome Link -->
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    Bootstrap CSS -->
+    <!-- <link rel="stylesheet" href="../css/bootstrap.min.css" /> -->
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/import.css" />
+    <link rel="stylesheet" href="../css/upload-excel.css" />
+    <link rel="stylesheet" href="../css/return.css" />
+    <link rel="stylesheet" href="../css/dashboard.css" />
+    <link rel="stylesheet" href="../css/Books.css" />
+    <!-- Local Fonts -->
+    <link rel="stylesheet" href="../css/fonts.css" />
+    <!-- <link href="../css/bootstrap.min.css" rel="stylesheet"> -->
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="brand">
+          <h2>LIBRARY</h2>
+        </div>
+        <nav class="nav-menu">
+          <a href="#" class="nav-item active" data-page="dashboard">
+            <span class="icon">📊</span>
+            Dashboard
+          </a>
+
+          <a href="#" class="nav-item" data-page="Books">
+            <span class="icon">📘</span>
+            Books
+          </a>
+          <a href="#" class="nav-item" data-page="Students">
+            <span class="icon">👤</span>
+            Students
+          </a>
+          <a href="#" class="nav-item add-book" data-page="Add_Book">
+            <span class="icon">➕</span>
+            Add Book
+          </a>
+          <a href="#" class="nav-item issue-book" data-page="Issue_Book">
+            <span class="icon">📩</span>
+            Issue Book
+          </a>
+          <a href="#" class="nav-item" data-page="Return">
+            <span class="icon">🔄</span>
+            Return
+          </a>
+
+          <a href="#" class="nav-item" data-page="Import">
+            <span class="icon">📥</span>
+            Import
+          </a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="top-header">
+          <h1>Library Management System</h1>
+        </header>
+
+        <!-- Content Area -->
+        <div id="content-area">
+          <div class="page-header">
+            <h2>Books</h2>
+            <button class="btn-primary">Add Book</button>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="../js/index.js"></script>
+    <!-- <script src="../js/books.js"></script> -->
+  </body>
+</html>

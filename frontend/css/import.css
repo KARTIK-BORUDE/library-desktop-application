@@ -1,0 +1,45 @@
+.import-container {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 14px;
+    padding: 20px;
+    width: 20rem;
+    color: #1F2937;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+    transition: 0.3s ease-in-out;
+    margin: 1rem;
+
+}
+
+.import-container:hover {
+    border-color: #CBD5E1;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+
+}
+
+img {
+    padding: 10px;
+    padding-left: 50px;
+}
+
+.stu-icon {
+    padding-left: 55px;
+}
+
+.excel-p,
+.stu-p,
+.scan-p {
+    padding-left: 70px;
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-between;
+    /* space-between or center or start */
+    flex-wrap: wrap;
+    /* keeps responsive layout */
+    gap: 1.5rem;
+    /* spacing between cards */
+    padding: 1rem;
+}

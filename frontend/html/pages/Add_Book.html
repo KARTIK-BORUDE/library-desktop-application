@@ -1,0 +1,196 @@
+<body>
+    <div class="page-header">
+        <h2>Add Book</h2>
+
+    </div>
+    <div class="main-content row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+            <div class="card-custom">
+
+                <form method="POST" action="#" class="needs-validation" novalidate>
+
+                    <!-- ========== STRING FIELDS ========== -->
+
+                    <!-- Title -->
+                    <div class="mb-3 mt-3">
+                        <label for="Accession_no" class="form-label">Accession Number</label>
+                        <input type="text" id="Accession_no" class="form-control" required
+                            placeholder="Enter Accession Number">
+
+                    </div>
+
+                    <!-- Accession Number, Author, Publisher -->
+                    <div class="row mb-3 mt-3">
+                        <div class="mb-3 col-md-4">
+                            <label for="title" class="form-label">Title</label>
+                            <input id="title" type="text" class="form-control" spellcheck="true" required placeholder="Enter Title">
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label for="Author" class="form-label">Author</label>
+                            <input id="Author" type="text" class="form-control" spellcheck="true" required
+                                placeholder="Enter author name">
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label for="publisher" class="form-label">Publisher</label>
+                            <input id="publisher" type="text" class="form-control" spellcheck="true" required
+                                placeholder="Enter publisher">
+                            <div class="invalid-feedback">Please Enter Publisher</div>
+                        </div>
+                    </div>
+
+                    <!-- Publisher Location, Language Code, Bill Number -->
+                    <div class="row mb-3 mt-3">
+                        <div class="mb-3 col-md-4">
+                            <label for="Pub_location" class="form-label">Publisher Location</label>
+                            <input id="Pub_location" class="form-control" spellcheck="true" required placeholder="Publisher Location">
+                            <div class="invalid-feedback">Please Enter Publisher Location</div>
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label for="Language_code" class="form-label">Language Code</label>
+                            <input id="Language_code" class="form-control" type="text" placeholder="Enter Language Code"
+                                required>
+                            <div class="invalid-feedback">Please Enter Language Code</div>
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label for="Bill_no" class="form-label">Bill Number</label>
+                            <input id="Bill_no" class="form-control" type="text" placeholder="Enter Bill Number"
+                                required>
+                            <div class="invalid-feedback">Please Enter Bill Number</div>
+                        </div>
+                    </div>
+
+                    <!-- Department, Location -->
+                    <div class="row gap-2 mb-3 mt-3">
+
+                        <div class="mb-3 col-md-4">
+                            <label for="department" class="form-label">Department</label>
+                            <select id="department" class="form-select" required>
+                                <option value="" selected disabled>Select Department</option>
+                                <option value="CO">Computer</option>
+                                <option value="AI">AI</option>
+                                <option value="IT">IT</option>
+                                <option value="AUTO">Automobile</option>
+                                <option value="ME">Mechanical</option>
+                                <option value="DDGM">DDGM</option>
+                                <option value="EE">Electronics</option>
+                                <option value="ELE">Electrical</option>
+                                <option value="CIVIL">Civil</option>
+                                <option value="NOT PRESENT">Not Present</option>
+                            </select>
+                            <div class="invalid-feedback">Please Select Department</div>
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label for="location" class="form-label">Location</label>
+                            <input id="location" class="form-control" spellcheck="true" required placeholder="Shelf/Rack location">
+                            <div class="invalid-feedback">Please Enter Location</div>
+                        </div>
+                    </div>
+
+                    <hr style="margin-top: 20px; margin-bottom: 20px;">
+
+                    <!-- ========== NUMBER FIELDS ========== -->
+
+                    <!-- Edition, Pages, Cost -->
+                    <div class="row mb-3 mt-3">
+                        <div class="mb-3 col-md-4">
+                            <label for="edition" class="form-label">Edition</label>
+                            <input id="edition" class="form-control" min="1" value="1" type="number"
+                                placeholder="Enter Edition" required>
+                            <div class="invalid-feedback">Please Enter Edition</div>
+                        </div>
+
+                        <div class="mb-3 col-md-4">
+                            <label for="Cost" class="form-label">Cost (in Rupees)</label>
+                            <input id="Cost" type="number" min="1" class="form-control" required
+                                placeholder="Cost in Rs">
+                            <div class="invalid-feedback">Please Enter Cost</div>
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label for="Pages" class="form-label">Pages</label>
+                            <input id="Pages" type="number" class="form-control" min="1" value="1" required
+                                placeholder="Number of pages">
+                            <div class="invalid-feedback">Please Enter Pages</div>
+                        </div>
+                    </div>
+
+                    <!-- Total Copies, Available Copies -->
+                    <div class="row mb-3 mt-3">
+                        <div class="mb-3 col-md-4">
+                            <label for="Total_copies" class="form-label">Total Copies</label>
+                            <input id="Total_copies" type="number" class="form-control" min="1" value="1" required
+                                placeholder="Number of copies">
+                            <div class="invalid-feedback">Please Enter Total Copies</div>
+                        </div>
+
+                        <div class="mb-3 col-md-4">
+                            <label for="Available_copies" class="form-label">Available Copies</label>
+                            <input id="Available_copies" type="number" class="form-control" min="1" value="1" required
+                                placeholder="Number of copies">
+                            <div class="invalid-feedback">Please Enter Available Copies</div>
+                        </div>
+
+                    </div>
+                    <hr style="margin-top: 20px; margin-bottom: 20px;">
+
+                    <!-- ========== DATE FIELDS ========== -->
+
+                    <!-- Bill Date, Purchase Date -->
+                    <div class="row">
+                        <div class="mb-3 col-md-4">
+                            <label for="Bill_date" class="form-label">Bill Date</label>
+                            <input id="Bill_date" class="form-control" required placeholder="Select Date" type="date">
+                            <div class="invalid-feedback">Please Enter Bill Date</div>
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label for="Purchase_Date" class="form-label">Purchase Date</label>
+                            <input id="Purchase_Date" class="form-control" required placeholder="Select Date"
+                                type="date">
+                            <div class="invalid-feedback">Please Enter Purchase Date</div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="gap-2 d-md-flex justify-content-md-end">
+                        <button type="button" id="add-btn" class="btn btn-primary btn-primary-custom text-white gap-5 ">
+                            Add Book
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- Success/Error Message -->
+        <div id="upload-message" class="upload-message hidden">
+            <div class="message-content">
+                <span class="message-icon" id="message-icon">✓</span>
+                <div class="message-text">
+                    <h4 id="message-title">Success!</h4>
+                    <p id="message-description">Operation completed successfully.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="upload-loading-overlay" class="upload-overlay hidden">
+            <div class="upload-loading-content">
+                <div class="spinner"></div>
+                <p id="upload-status-text">Loading...</p>
+                <p id="upload-progress-text"></p>
+            </div>
+        </div>
+        <!-- Confirmation Dialog -->
+        <div id="confirmation-overlay" class="upload-overlay hidden">
+            <div class="upload-loader-card">
+                <h3>Book Already Exists!</h3>
+                <p style="margin: 20px 0;">This accession number is already in the database. Do you want to update the existing book?</p>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button id="confirm-yes-btn" class="btn btn-primary" style="background: #10b981; border: none; padding: 10px 30px;">Yes, Update</button>
+                    <button id="confirm-no-btn" class="btn btn-secondary" style="background: #6b7280; border: none; padding: 10px 30px;">No, Cancel</button>
+                </div>
+            </div>
+        </div>
+</body>
+
+
+</html>

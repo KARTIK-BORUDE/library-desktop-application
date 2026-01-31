@@ -1,0 +1,7 @@
+{
+    "ignore": [
+        "node_modules/**/*",
+        "frontend/**/*"
+    ],
+    "ext": "js,  json,html"
+}

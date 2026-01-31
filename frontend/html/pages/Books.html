@@ -1,0 +1,143 @@
+<div class="page-header">
+  <h2>All Books</h2>
+  <div style="display: flex; gap: 16px; align-items: center">
+    <div class="search-bar">
+      <input type="text" placeholder="Search..." id="search" value="" />
+      <span class="search-icon">🔍</span>
+    </div>
+    <button class="btn btn-success" id="export-btn">
+      <!-- <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg> -->
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 8 12 3 17 8"></polyline>
+        <line x1="12" y1="3" x2="12" y2="15"></line>
+      </svg>
+
+      Export
+    </button>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <div class="table-container" style="overflow: auto">
+    <table class="table">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Sr No</th>
+          <th scope="col">Accession No</th>
+          <th scope="col">Title</th>
+          <th scope="col">Author</th>
+          <th scope="col">Edition</th>
+          <th scope="col">Pages</th>
+          <th scope="col">Language Code</th>
+          <th scope="col">Department</th>
+          <th scope="col">Cost</th>
+          <th scope="col">Location</th>
+          <th scope="col">Available Copies</th>
+          <th scope="col">Edit</th>
+          <th scope="col">Delete</th>
+          <th scope="col">Label</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+</div>
+<div class="pagination-container">
+  <button class="pagination-btn" id="prev">
+    <!-- <i class="fa-solid fa-arrow-left"></i> -->
+    <svg viewBox="0 0 24 24">
+      <path
+        d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
+        fill="currentColor"
+      />
+    </svg>
+  </button>
+
+  <button class="page active">1</button>
+  <button class="page">2</button>
+  <button class="page">3</button>
+  <button class="pagination-btn" id="next">
+    <!-- <i class="fa-solid fa-arrow-right"></i> -->
+    <svg viewBox="0 0 24 24">
+      <path
+        d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"
+        fill="currentColor"
+      />
+    </svg>
+  </button>
+</div>
+
+<!-- Success/Error Message -->
+<div id="upload-message" class="upload-message hidden">
+  <div class="message-content">
+    <span class="message-icon" id="message-icon">✓</span>
+    <div class="message-text">
+      <h4 id="message-title">Success!</h4>
+      <p id="message-description">Operation completed successfully.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="books-loading-overlay" class="upload-overlay hidden">
+  <div class="upload-loader-card">
+    <div class="spinner"></div>
+    <h3 id="books-status-text">Loading Books...</h3>
+    <p id="books-progress-text">Fetching data from database...</p>
+  </div>
+</div>
+
+<!-- Label View Overlay -->
+<div id="view-label-overlay" class="upload-overlay hidden">
+  <div class="upload-loader-card">
+    <h3>Book Label</h3>
+    <img
+      id="label-image"
+      src=""
+      alt="Book Label"
+      style="max-width: 100%; margin: 1rem 0"
+    />
+    <button type="button" class="btn btn-primary" id="close-label-overlay">
+      Close
+    </button>
+  </div>
+</div>
+
+<!-- Confirmation Dialog -->
+<div id="confirmation-overlay" class="upload-overlay hidden">
+  <div class="upload-loader-card">
+    <h3>Are You Want to Delete This Book?</h3>
+    <p style="margin: 20px 0" id="confirmation-text"></p>
+    <div style="display: flex; gap: 10px; justify-content: center">
+      <button
+        id="confirm-yes-btn"
+        class="btn btn-primary"
+        style="background: #ef4444; border: none; padding: 10px 30px"
+      >
+        Yes, Delete
+      </button>
+      <button
+        id="confirm-no-btn"
+        class="btn btn-secondary"
+        style="background: #6b7280; border: none; padding: 10px 30px"
+      >
+        No, Cancel
+      </button>
+    </div>
+  </div>
+</div>

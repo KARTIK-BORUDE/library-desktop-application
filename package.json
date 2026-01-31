@@ -1,0 +1,69 @@
+{
+  "name": "library-management-system",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "library": "nodemon --exec electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win --x64"
+  },
+  "build": {
+    "appId": "com.college.library-management-system",
+    "productName": "Library Management System",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!.agent/**",
+      "!.cursor/**",
+      "!.git/**",
+      "!.vscode/**",
+      "!.env",
+      "!**/*.xlsx",
+      "!**/*.csv",
+      "!**/*.log",
+      "!**/*.txt"
+    ],
+    "win": {
+      "target": {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      },
+      "icon": "./Assets/icon.ico"
+    },
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/mysql2/**/*"
+    ],
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  },
+  "keywords": [],
+  "author": "Kartik Borude",
+  "license": "ISC",
+  "description": "Library Management Desktop Application Created using the Node.js for the Backend and the bootstrap , css ,html,js for the Frontend",
+  "devDependencies": {
+    "electron": "^38.7.0",
+    "electron-builder": "^26.4.0",
+    "nodemon": "^3.1.11"
+  },
+  "dependencies": {
+    "@e965/xlsx": "^0.20.3",
+    "bcryptjs": "^3.0.3",
+    "bootstrap": "^5.3.8",
+    "bwip-js": "^4.8.0",
+    "dotenv": "^17.2.3",
+    "electron-store": "^8.2.0",
+    "express": "^5.2.1",
+    "mysql2": "^3.16.1"
+  }
+}

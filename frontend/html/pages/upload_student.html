@@ -1,0 +1,32 @@
+<div class="page-header">
+    <h2>Upload Student Excel File</h2>
+</div>
+<div class="card-container-upload">
+    <div class="card-body">
+        <img src="../../Assets/folder.png" alt="Upload Icon" class="folder">
+        <label class="minimal-file">
+            <span class="select excel-span" id="excel-file-for-student">Select a file</span>
+            <input type="file" disabled accept=".xlsx">
+        </label>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="upload-loading-overlay" class="upload-overlay hidden">
+    <div class="upload-loader-card">
+        <div class="spinner"></div>
+        <h3 id="upload-status-text">Processing Excel file...</h3>
+        <p id="upload-progress-text">Preparing upload...</p>
+    </div>
+</div>
+
+<!-- Success/Error Message -->
+<div id="upload-message" class="upload-message hidden">
+    <div class="message-content">
+        <span class="message-icon" id="message-icon">✓</span>
+        <div class="message-text">
+            <h4 id="message-title">Success!</h4>
+            <p id="message-description">Operation completed successfully.</p>
+        </div>
+    </div>
+</div>
