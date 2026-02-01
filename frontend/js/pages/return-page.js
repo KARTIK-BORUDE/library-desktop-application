@@ -21,9 +21,10 @@ export function initReturnPage(loadPageCallback) {
     return;
   }
 
+  //showing the All Issueed Books to the Librarian Only the Issued And Due Books not the returned Books
   window.BOOKS.getIssuedBooks().then((res) => {
     const tbody = document.getElementById("return-data");
-
+    console.log("Issued Books", res);
     if (!res.data || res.data.length === 0) {
       tbody.innerHTML =
         "<tr><td colspan='8' style='text-align: center;'><b> No Issued Books Found</b> </td></tr>";

@@ -15,6 +15,7 @@ export function initBooksPage(loadPageCallback) {
   window.BOOKS.seeTotalBooks()
     .then((res) => {
       localStorage.removeItem("DBERROR");
+      console.log("All Books Result :",res);
 
       // Hide loading overlay
       if (loadingOverlay) {
@@ -25,17 +26,18 @@ export function initBooksPage(loadPageCallback) {
       table_body.innerHTML = "";
 
       if (res.success) {
-        if (res.All_books.length == 0) {
+        console.log("Books DATA ::::",res)
+        if (res.data.data.length == 0) {
           table_body.innerHTML =
             '<tr><td colspan="11" class="text-center">No Record To Display</td></tr>';
           return;
         }
 
         // Display books (first 50)
-        displayBooks(res.All_books.slice(0, 50), loadPageCallback);
+        displayBooks(res.data.data.slice(0, 50), loadPageCallback);
 
         // Initialize search functionality with all books
-        searchBooks(res.All_books, loadPageCallback);
+        searchBooks(res.data.data, loadPageCallback);
       } else {
         table_body.innerHTML =
           '<tr><td colspan="11" class="text-center text-muted py-4">Failed To Load Data</td></tr>';

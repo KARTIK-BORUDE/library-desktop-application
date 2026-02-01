@@ -127,6 +127,7 @@ export function searchBooks(allBooks, loadPageCallback) {
       } else {
         // Fallback: reload books from API if allBooks is empty
         window.BOOKS.seeTotalBooks().then((res) => {
+          // console.log("Data ::",res);
           if (res.success && res.All_books) {
             displayBooks(res.All_books.slice(0, 100), loadPageCallback);
           }

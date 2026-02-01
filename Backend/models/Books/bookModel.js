@@ -4,6 +4,8 @@ const dialog = require("electron").dialog;
 const Store = require("electron-store");
 // Use a different filename to avoid conflict with config.json
 const store = new Store({ name: "app-data" });
+const axios = require("axios");
+const { rectangularmicroqrcode } = require("bwip-js/node");
 
 class Book {
   /**
@@ -11,40 +13,31 @@ class Book {
    * @param {string} accessionNo - The accession number of the book
    * @returns {Promise<Object>} Response object with success status and data/error
    */
-  //API Creation IS DONE
-  async getTitle(accessionNo) {
-    try {
-      const query = `SELECT Title, Available_copies FROM \`books\` WHERE Accession_no = ?`;
-
-      const result = await new Promise((resolve, reject) => {
-        connection.query(query, [accessionNo], (err, res) => {
-          if (err) {
-            return reject(err);
-          }
-          resolve(JSON.parse(JSON.stringify(res)));
-        });
-      });
-
-      // Check if book was found
-      if (!result || result.length === 0) {
-        return {
-          success: false,
-          error: `No book found with Accession Number: ${accessionNo}`,
-        };
+  //API Creation And Implementation IS DONE
+  // This Function is being called in the issue-book-page.js file at line 47
+  async getTitle(acc_no){
+    try{
+    const {data} = await axios.get(`http://localhost:2150/books/getTitle/${acc_no}`);
+    console.log(data);
+    if(data.success){
+      return{
+        success:true,
+        data:data.data
       }
-
+    }
+    return{
+      success:false,
+      message:data.message||"Falied To Get Title"
+    }}
+    catch(error){
+      console.log("Error in getTitle", error);
       return {
-        success: true,
-        data: result[0], // Return single book object instead of array
-      };
-    } catch (error) {
-      return {
-        success: false,
-        error: error.message || "Database error occurred",
+          success: false,
+          error: error.response?.data?.message || error.message || "Failed to get title",
       };
     }
-  }
 
+  }
   async getTotalBooks() {
     const q = `SELECT COUNT(*) AS total FROM books`;
     const q2 = `SELECT COUNT(*) AS issued_books FROM issued_books where status = 'issued' OR status ='due'`;
@@ -129,127 +122,56 @@ class Book {
     }
   }
 
-  //API Creation IS DONE
-  async AddBook(data) {
-    try {
-      // First, check if book with same Accession_no already exists
-      const checkQuery = `SELECT id, Title FROM books WHERE Accession_no = ?`;
-
-      const existingBook = await new Promise((resolve, reject) => {
-        connection.query(checkQuery, [data.Accession_no], (err, res) => {
-          if (err) reject(err);
-          else resolve(res);
-        });
-      });
-
-      // If book exists, return error with book details
-      if (existingBook && existingBook.length > 0) {
+  //API Creation And implementation Is Done
+  //This Function is being called in the add-book-page.js file at line 112
+  async  AddBook(data) {
+    try{
+      const response = await axios.post("http://localhost:2150/books/addBook", data);
+      console.log("AddBook response", response.data);
+      if(response.data.success){
         return {
-          success: false,
-          error: "Duplicate Book",
-          message: `Book with Accession Number "${data.Accession_no}" already exists`,
-          existingBook: {
-            id: existingBook[0].id,
-            title: existingBook[0].Title,
-            accessionNo: data.Accession_no,
-          },
-        };
+            success: true,
+            message: response.data.message||"Book added successfully",
+          };
       }
+      else{
+        return {
+            success: false,
+            error: response.data.message || "Failed to add book",
+          };
+      }
+      
 
-      // If no duplicate, proceed with insert
-      const insertQuery = `INSERT INTO books (
-        \`Accession_no\`,
-        \`Title\`,
-        \`Author\`,
-        \`Edition\`,
-        \`Publisher\`,
-        \`Pub_location\`,
-        \`Pages\`,
-        \`Language_code\`,
-        \`Bill_no\`,
-        \`Bill_date\`,
-        \`Department\`,
-        \`Purchase_Date\`,
-        \`Cost\`,
-        \`Location\`,
-        \`Total_copies\`,
-        \`Available_copies\`
-      ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
-
-      // Convert empty date strings to null for optional date fields
-      const newData = [
-        data.Accession_no,
-        data.Title,
-        data.Author,
-        data.Edition,
-        data.Publisher,
-        data.Pub_location,
-        data.Pages,
-        data.Language_code,
-        data.Bill_no,
-        data.Bill_date || null,
-        data.Department,
-        data.Purchase_Date || null,
-        data.Cost,
-        data.Location,
-        data.Total_copies,
-        data.Available_copies,
-      ];
-
-      return await new Promise((resolve, reject) => {
-        connection.query(insertQuery, newData, (err, res) => {
-          if (err) {
-            // Handle duplicate key error if it still happens (race condition)
-            if (err.code === "ER_DUP_ENTRY") {
-              resolve({
-                success: false,
-                error: "Duplicate Book",
-                message: `Book with Accession Number "${data.Accession_no}" was just added by another user`,
-              });
-            } else {
-              reject(err);
-            }
-          } else {
-            resolve({
-              success: true,
-              message: "Book added successfully",
-              insertId: res.insertId,
-            });
-          }
-        });
-      });
-    } catch (error) {
-      return {
+    }catch(error) {
+    console.log("Error in AddBook", error);
+    return {
         success: false,
-        error: error.message || "Failed to add book",
-      };
+        error: error.response?.data?.message || error.message || "Failed to add book",
+    };
+}
+  }
+
+  //API Creation And implementation Is Done
+  //This Function is being called in the books-page.js at line-129
+  async seeTotalBooks(){
+    try {
+      const {data} = await axios.get("http://localhost:2150/books/getAllBooks");
+      console.log("Books In in seeTotalBooks",data.success );
+      if(data.success){
+        return{
+          success:true,
+          data
+        }
+      }
+    } catch (error) {
+      console.log("Error In the seeTotalBooks",error)
+      return{
+        success:false,
+        message:"Falied To Load Books",
+      }
     }
   }
-
-  async seeTotalBooks() {
-    // Query for ALL books
-    const allBooksQuery = `SELECT * FROM \`books\``;
-
-    const all_books = await new Promise((resolve, reject) => {
-      connection.query(allBooksQuery, (err, result) => {
-        if (err) {
-          console.error("Error fetching all books:", err);
-          return reject(err);
-        }
-        resolve(JSON.parse(JSON.stringify(result)));
-      });
-    });
-
-    //setting the total books data in local storage of the electron
-    store.set("total_books", all_books);
-    //
-
-    return {
-      success: true,
-      All_books: all_books,
-      totalCount: all_books.length,
-    };
-  }
+  
 
   async exportBooks() {
     try {
@@ -306,111 +228,91 @@ class Book {
   }
 
   //API Creation Is DONE
-  async searchBooks(term) {
-    //query to get the like only searched data from the DB
-    let q = `select * from \`books\` where Title LIKE ? OR Author LIKE ? OR Accession_no LIKE ? OR Department LIKE ? OR Publisher LIKE ? OR Language_code LIKE ? OR Edition LIKE ?  LIMIT 600 `;
-    const search = `%${term}%`;
+  // async searchBooks(term) {
+  //   //query to get the like only searched data from the DB
+  //   let q = `select * from \`books\` where Title LIKE ? OR Author LIKE ? OR Accession_no LIKE ? OR Department LIKE ? OR Publisher LIKE ? OR Language_code LIKE ? OR Edition LIKE ?  LIMIT 600 `;
+  //   const search = `%${term}%`;
 
-    //executing the query to get the searched data
-    let found_data = await new Promise((resolve, reject) => {
-      connection.query(
-        q,
-        [search, search, search, search, search, search, search],
-        (err, result) => {
-          if (err) reject(err);
-          else resolve(JSON.parse(JSON.stringify(result)));
-        },
-      );
-    });
-    // if data found then return it else return error
-    if (found_data.length > 0) {
-      return {
-        success: true,
-        data: found_data,
-      };
-    } else {
-      return {
-        success: false,
-        error: "No data found",
-      };
-    }
-  }
-
-  //API Creation IS DONE
-  async updateBook(book) {
-    // Validate book ID
-    if (!book.id) {
-      return {
-        success: false,
-        error: "Book ID is required",
-      };
-    }
-    const q = `UPDATE \`books\` SET 
-      \`Accession_no\` = ?,
-      \`Title\` = ?,
-      \`Author\` = ?,
-      \`Edition\` = ?,
-      \`Publisher\` = ?,
-      \`Pub_location\` = ?,
-      \`Pages\` = ?,
-      \`Language_code\` = ?,
-      \`Bill_no\` = ?,
-      \`Bill_date\` = ?,
-      \`Department\` = ?,
-      \`Purchase_Date\` = ?,
-      \`Cost\` = ?,
-      \`Location\` = ?,
-      \`Total_copies\` = ?,
-      \`Available_copies\` = ?
-      WHERE \`id\` = ?`;
-
-    const data = [
-      book.Accession_no,
-      book.Title,
-      book.Author,
-      book.Edition,
-      book.Publisher,
-      book.Pub_location,
-      book.Pages,
-      book.Language_code,
-      book.Bill_no || "NOT PRESENT",
-      book.Bill_date || null, // Convert empty string to NULL for optional date
-      book.Department,
-      book.Purchase_Date || null, // Convert empty string to NULL for optional date
-      book.Cost,
-      book.Location,
-      book.Total_copies,
-      book.Available_copies,
-      book.id,
-    ];
+  //   //executing the query to get the searched data
+  //   let found_data = await new Promise((resolve, reject) => {
+  //     connection.query(
+  //       q,
+  //       [search, search, search, search, search, search, search],
+  //       (err, result) => {
+  //         if (err) reject(err);
+  //         else resolve(JSON.parse(JSON.stringify(result)));
+  //       },
+  //     );
+  //   });
+  //   // if data found then return it else return error
+  //   if (found_data.length > 0) {
+  //     return {
+  //       success: true,
+  //       data: found_data,
+  //     };
+  //   } else {
+  //     return {
+  //       success: false,
+  //       error: "No data found",
+  //     };
+  //   }
+  // }
+  async searchBooks(term){
     try {
-      return await new Promise((resolve, reject) => {
-        connection.query(q, data, (err, res) => {
-          if (err) {
-            reject(err);
-          } else {
-            if (res.affectedRows === 0) {
-              resolve({
-                success: false,
-                error: "Book not found or no changes made",
-              });
-            } else {
-              resolve({
-                success: true,
-                message: "Book updated successfully",
-              });
-            }
-          }
-        });
-      });
+      const {data} = await axios.get(`http://localhost:2150/books/searchBooks?term=${term}`);
+      console.log("Result ::",data);
+      if(data.success){
+        return{
+          success:data.success,
+          message:data.message,
+          data:data.data
+        }
+      }
+      return{
+        success:data.success,
+        message:data.message||"Falied To Search Book"
+      }
+      
     } catch (error) {
-      return {
-        success: false,
-        error: error.message || "Failed to update data",
-      };
+      console.log("Error In the searchBooks model " , error)
+      return{
+        success:false,
+        message:error.message || "Falied To Search Book"
+      }
+      
     }
   }
+  //API Creation And Implementation IS DONE
+  //This Function is being called in the book-form.js file at line-47
+  async updateBook(book){
+    try {
+      if(!book.id){
+        return{
+          success:false,
+          message:"Book ID is required"
+        }
+      }
+      const {data} = await axios.put("http://localhost:2150/books/updateBook",book);
+      console.log("Result in the updateBook",data );
+      if(data.success){
+        return{
+          success:data.success,
+          message:data.message,
+        }
+      }
 
+      return{
+        success:data.success,
+        message:data.message,
+      }
+    } catch (error) {
+      console.log("Error In The updateBook Model ", error)
+      return{
+        success:false,
+        message:error.message||"Falied To Update The Book"
+      }
+    }
+  }
   //API Creation IS DONE
   async issueBook(issue_book) {
     let q = `Select title,id from \`books\` WHERE accession_no = ?`;
@@ -511,161 +413,107 @@ class Book {
     }
   }
 
-  //API Creation Is DONE 
+//API Creation And Implementation Is Done 
   async getIssuedBooks() {
-    let q = `SELECT 
-    ib.id,
-    ib.issue_date,
-    ib.actual_return_date,
-    ib.status,
-    b.Title as book_title,
-    b.Accession_no,
-    s.name as student_name,
-    s.enrollment_no,
-    s.Department as student_department,
-    s.year as student_year
-    FROM issued_books ib
-    INNER JOIN books b ON ib.book_id = b.id
-    INNER JOIN students s ON ib.student_id = s.id
+    try {
+      const result = await axios.get("http://localhost:2150/books/getAllIssuedBooks");
     
-`; //executing the query to get Students Data
-    //using promise to handle the async function
-    try {
-      let issued_books_data = await new Promise((resolve, reject) => {
-        connection.query(q, (err, result) => {
-          if (err) reject(err);
-          else resolve(JSON.parse(JSON.stringify(result)));
-        });
-      });
-      //
-      return {
-        success: true,
-        data: issued_books_data,
-      };
-    } catch (err) {
-      return {
-        success: false,
-        error: err.message || "Error ::::",
-      };
-    }
-  }
-
-  //API Creation Is DONE
-  async getDataOfIssuedBooks(data) {
-    let q = `
-    SELECT 
-      b.Title as book_title,
-      b.id as book_id,
-      s.name as stu_nm,
-      s.year as stu_yr,
-      s.Department as dept,
-      s.enrollment_no as stu_enroll,
-      s.id as student_id,
-      ib.issue_date  ,
-      ib.actual_return_date as ard,
-      b.id as book_id
-      FROM books b ,issued_books ib ,students s
-      WHERE b.id = ib.book_id AND ib.student_id = s.id
-      AND b.Accession_no = ? AND (ib.status = 'issued' OR ib.status = 'due')
-      `;
-
-    try {
-      const booksData = await new Promise((resolve, reject) => {
-        connection.query(q, [data], (err, res) => {
-          if (err) reject(err);
-          else resolve(JSON.parse(JSON.stringify(res)));
-        });
-      });
-
-      if (!booksData || booksData.length == 0) {
-        return {
-          success: false,
-          error: "No issued book found",
-        };
-      } else {
+      if(result.data.data.success){
         return {
           success: true,
-          data: booksData,
+          data: result.data.data.issuedBooks,
+        };
+      }else{
+        return {
+          success: false,
+          error: result.data.error,
         };
       }
     } catch (error) {
+      console.log("Error in getIssuedBooks",error);
       return {
         success: false,
         error: error.message || "Error ::::",
       };
     }
-  }
-  //API creation IS DONE
-  async isBookExists(acc_no) {
-    let q = `SELECT * FROM books where Accession_no =?`;
-    try {
-      let data = await new Promise((resolve, reject) => {
-        connection.query(q, [acc_no], (err, res) => {
-          if (err) reject(err);
-          else resolve(JSON.parse(JSON.stringify(res)));
-        });
-      });
+}
 
-      if (data.length != 0) {
-        return {
-          success: true,
-          data: data,
-        };
-      } else {
-        return {
-          success: false,
-          error: "No book found",
-        };
+
+  //API Creation And Implementation Is DONE
+  async getDataOfIssuedBooks(accession_no){
+    try {
+      const result = await axios.get(`http://localhost:2150/books/getDataOfIssuedBooks/${accession_no}`)
+      console.log("Result",result);
+      if(result.data.data.success){
+      return{
+        success:true,
+        issuedBooks:result.data.data.issuedBooks,
       }
+      }
+    
     } catch (error) {
-      return {
-        success: false,
-        error: error.message || "Failed to fetch data",
-      };
+      console.log("Error In the getDataOfIssuedBooks ::",error)
+      return{
+        success:false,
+        message:error.message||"Error in API Of the getDataOfIssuedBooks"
+      }
     }
   }
 
-  //Api Creation IS Done
+  //API creation And Implementation  IS DONE This Api Is being called when Adding the book 
+  //so that it checks for whether the Book Exists or Not 
+  //This Function is being called in the add-book-page.js at line-40
+  async isBookExists(acc_no){
+    try {
+      const result = await axios.get(`http://localhost:2150/books/isBookExists/${acc_no}`);
+      console.log("result in the IsBookExists Model ",result);
+
+      if(result.data.success){
+        return{
+          success:true,
+          data : result.data.book,
+        }
+      }
+      return{
+        success:result.data.success,
+        message:result.data.message,
+      }
+
+    } catch (error) {
+      console.log("Error In the isBookExists Model",error)
+      return{
+        success:false,
+        message:"Failed To Check The Books Existance"
+      }
+    }
+  }
+  //Api Creation And Implementation IS Done
   async fileReturnBook(data) {
-    let q = `UPDATE \`books\` SET Available_copies = Available_copies + 1 WHERE Accession_no = ?`;
-
-    let q2 = `UPDATE \`issued_books\` SET status = 'returned', returned_on = CURDATE() WHERE book_id = ? AND student_id = ?`;
-
-    let up_data = Object.values(data);
-
     try {
-      const books = await new Promise((resolve, reject) => {
-        connection.query(q, [data][0].ac_no, (err, res) => {
-          if (err) reject(err);
-          else resolve(JSON.parse(JSON.stringify(res)));
-        });
-      });
-
-      const issue_book = await new Promise((resolve, reject) => {
-        connection.query(q2, [data.book_id, data.stu_id], (err, res) => {
-          if (err) reject(err);
-          else resolve(JSON.parse(JSON.stringify(res)));
-        });
-      });
-
-      if (books.affectedRows === 0 || issue_book.affectedRows === 0) {
-        return {
-          success: false,
-          error: "Failed to return book - no matching record found",
-        };
-      } else {
-        return {
-          success: true,
-          message: "Book returned successfully",
-        };
+      console.log("data in the fileReturnBook Model ",data);
+      const result = await axios.put("http://localhost:2150/books/fileReturn",data)
+      console.log("result in the fileReturnBook Model ",result);
+      if(result.data.success){
+        return{
+          success:true,
+          data : result.data.book,
+        }
       }
+      return{
+        success:result.data.success,
+        message:result.data.message,
+      }
+
     } catch (error) {
-      return {
-        success: false,
-        error: error.message || "Error ::::",
-      };
+      console.log("Error In the fileReturnBook Model",error)
+      return{
+        success:false,
+        message:"Failed To Return The Book"
+      }
     }
+    
   }
+
 }
 
 module.exports = { Book, store };

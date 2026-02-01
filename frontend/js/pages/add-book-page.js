@@ -49,15 +49,8 @@ export function initAddBookPage(loadPageCallback) {
               }, 200);
             } else {
               // Book found - show loader and success message
-              //showLoading();
-              showConfirmationPopUp(res.data[0], loadPageCallback);
-
-              // Store book data and navigate to edit page
-              // setTimeout(() => {
-              //     localStorage.setItem("bookData", JSON.stringify(res.data[0]));
-              //     loadPageCallback("edit-book");
-              //     //hideLoading();
-              // }, 2000);
+              console.log("book Exists::",res)
+              showConfirmationPopUp(res.data, loadPageCallback);
             }
           })
           .catch((error) => {

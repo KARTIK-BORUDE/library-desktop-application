@@ -45,6 +45,7 @@ export function initIssueBookPage(loadPageCallback) {
         return;
       }
       window.BOOKS.getTitle(accession_no_value.trim()).then((res) => {
+        console.log(res.data);
         if (!res.success) {
           setTimeout(() => {
             showMessage(
@@ -53,11 +54,12 @@ export function initIssueBookPage(loadPageCallback) {
               res.error || "Failed to fetch book",
             );
           }, 200);
+          
         } else {
           showMessage("success", "Book Found", "Book Found");
-          document.getElementById("title").value = res.data.Title;
+          document.getElementById("title").value = res.data[0].Title;
           document.getElementById("available_copies").value =
-            res.data.Available_copies;
+            res.data[0].Available_copies;
         }
       });
     }, 1000);
@@ -99,7 +101,7 @@ export function initIssueBookPage(loadPageCallback) {
     const return_date = document.getElementById("return_date").value;
 
     // Validate each field
-    if (!accession_no) {
+    if (!accession_no || accession_no == "") {
       showMessage(
         "error",
         "Accession No Required",
@@ -107,7 +109,7 @@ export function initIssueBookPage(loadPageCallback) {
       );
       return;
     }
-    if (!enrollment_no) {
+    if (!enrollment_no || enrollment_no == "") {
       showMessage(
         "error",
         "Enrollment No Required",
@@ -115,7 +117,7 @@ export function initIssueBookPage(loadPageCallback) {
       );
       return;
     }
-    if (!return_date) {
+    if (!return_date || return_date == "") {
       showMessage("error", "Return Date Required", "Please select return date");
       return;
     }

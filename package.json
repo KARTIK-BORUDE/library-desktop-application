@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "@e965/xlsx": "^0.20.3",
+    "axios": "^1.13.4",
     "bcryptjs": "^3.0.3",
     "bootstrap": "^5.3.8",
     "bwip-js": "^4.8.0",

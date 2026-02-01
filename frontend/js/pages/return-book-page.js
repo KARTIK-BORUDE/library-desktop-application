@@ -82,28 +82,10 @@ export function initReturnBookPage(loadPageCallback) {
       window.BOOKS.getDataOfIssuedBook(accession_no_value.trim()).then(
         (res) => {
           // Store data for use in the onchange event of the list
-          issued_data = res.data;
+          console.log("Data in controller ", res);
 
-          // If the data is found, populate the list and dispatch the change event
-          if (res.success) {
-            if (res.data.length > 0) {
-              book_id = res.data[0].book_id;
-              student_id = res.data[0].student_id;
-              res.data.forEach((stu) => {
-                const option = document.createElement("option");
-                option.value = stu.stu_enroll;
-                option.textContent = stu.stu_enroll;
-                list.appendChild(option);
-              });
-            }
-
-            // Populate the list and dispatch the change event
-            list.selectedIndex = 0;
-            list.dispatchEvent(new Event("change"));
-            showMessage("success", "Data Found", "Data Found");
-          }
-          // If the data is not found, clear the list and show the message
-          if (res.error) {
+          // If the data is not found or error occurred, clear the list and show the message
+          if (!res || !res.success || res.error || !res.issuedBooks || res.issuedBooks.length === 0) {
             showMessage(
               "error",
               "No Data Found",
@@ -118,6 +100,26 @@ export function initReturnBookPage(loadPageCallback) {
             document.getElementById("issued_date").value = "";
             return;
           }
+
+          issued_data = res.issuedBooks;
+          console.log("issued data ", issued_data);
+
+          // If the data is found, populate the list and dispatch the change event
+          if (issued_data.length > 0) {
+            book_id = issued_data[0].book_id;
+            student_id = issued_data[0].student_id;
+            issued_data.forEach((stu) => {
+              const option = document.createElement("option");
+              option.value = stu.stu_enroll;
+              option.textContent = stu.stu_enroll;
+              list.appendChild(option);
+            });
+          }
+
+          // Populate the list and dispatch the change event
+          list.selectedIndex = 0;
+          list.dispatchEvent(new Event("change"));
+          showMessage("success", "Data Found", "Data Found");
         },
       );
     }, 1000);

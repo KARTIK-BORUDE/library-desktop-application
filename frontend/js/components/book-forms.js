@@ -46,6 +46,7 @@ export function deleteBookOrStudent(book_id, stu_id, loadPageCallback) {
  */
 export function updateBook(bookData, update_btn, loadPageCallback) {
   window.BOOKS.updateBook(bookData).then((res) => {
+   
     if (res.success) {
       update_btn.style.backgroundColor = "#28a745";
       update_btn.style.borderColor = "#28a745";
