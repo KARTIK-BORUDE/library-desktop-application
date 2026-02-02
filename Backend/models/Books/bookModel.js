@@ -493,15 +493,14 @@ class Book {
       console.log("data in the fileReturnBook Model ",data);
       const result = await axios.put("http://localhost:2150/books/fileReturn",data)
       console.log("result in the fileReturnBook Model ",result);
-      if(result.data.success){
+      if(result.data.data.success){
         return{
           success:true,
-          data : result.data.book,
         }
       }
       return{
-        success:result.data.success,
-        message:result.data.message,
+        success:result.data.data.success,
+        message:result.data.data.message,
       }
 
     } catch (error) {
