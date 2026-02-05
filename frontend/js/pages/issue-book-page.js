@@ -77,6 +77,7 @@ export function initIssueBookPage(loadPageCallback) {
         return;
       }
       window.BOOKS.getStudentData(enrollment_no_value).then((res) => {
+        console.log(res);
         if (!res.success) {
           showMessage(
             "error",
@@ -86,8 +87,8 @@ export function initIssueBookPage(loadPageCallback) {
           return;
         } else {
           showMessage("success", "Student Found", "Student Found");
-          document.getElementById("name").value = res.data[0].name;
-          document.getElementById("year").value = res.data[0].year;
+          document.getElementById("name").value = res.data.name;
+          document.getElementById("year").value = res.data.year;
         }
       });
     }, 1000);

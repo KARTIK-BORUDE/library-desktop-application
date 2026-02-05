@@ -893,6 +893,7 @@ app.on("window-all-closed", async () => {
 
   // Quit the app (except on macOS where apps stay open)
   if (process.platform !== "darwin") {
+    
     app.quit();
   }
 });

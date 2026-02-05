@@ -19,7 +19,7 @@ class Book {
     try{
     const {data} = await axios.get(`http://localhost:2150/books/getTitle/${acc_no}`);
     console.log(data);
-    if(data.success){
+    if(data.success && data.data.length > 0){
       return{
         success:true,
         data:data.data
@@ -38,90 +38,51 @@ class Book {
     }
 
   }
-  async getTotalBooks() {
-    const q = `SELECT COUNT(*) AS total FROM books`;
-    const q2 = `SELECT COUNT(*) AS issued_books FROM issued_books where status = 'issued' OR status ='due'`;
-    const q4 = `SELECT COUNT(*) AS all_time_issue FROM issued_books`;
-    const q3 = `SELECT COUNT(*) AS online FROM users where status = 1 AND role = 'student'`;
+  async getTotalBooks(){
     try {
-      const total = await new Promise((resolve, reject) => {
-        connection.query(q, (err, results) => {
-          if (err) return reject(err);
+      const all_issued_books = await axios.get("http://localhost:2150/books/getAllIssuedCount");
+      const issued_books = await axios.get("http://localhost:2150/books/getTotalIssuedBookCount");
+      const books_count = await axios.get("http://localhost:2150/books/getTotalBookCount");
+      const stu_count = await axios.get("http://localhost:2150/student/getTotalStudents");
+      const online_stu = await axios.get("http://localhost:2150/student/getOnlineStudents");
+      const overdue_books = await axios.get("http://localhost:2150/books/getOverdueBooksCount");
+      //Extract The Data From The Response Object
+      const total_books_count = books_count.data.data;
+      const total_issued_books_count = issued_books.data.data;
+      const all_issued_books_count = all_issued_books.data.data;
+      const total_students_count = stu_count.data.data;
+      const online_students_count = online_stu.data.data;
+      const overdue_books_count = overdue_books.data.count; 
+      console.log("Total Students Count",online_students_count);
 
-          resolve(results[0].total); // Extract number
-        });
-      });
-
-      const issue = await new Promise((resolve, reject) => {
-        connection.query(q2, (err, results) => {
-          if (err) return reject(err);
-          resolve(results[0].issued_books); // Extract number
-        });
-      });
-
-      const student = await new Promise((resolve, reject) => {
-        connection.query(
-          `SELECT COUNT(*) AS total_students FROM students`,
-          (err, results) => {
-            if (err) return reject(err);
-            resolve(results[0].total_students);
-          },
-        );
-      });
-
-      const due = await new Promise((resolve, reject) => {
-        connection.query(
-          `SELECT COUNT(status) AS due FROM issued_books WHERE status =\'due\'`,
-          (err, results) => {
-            if (err) return reject(err);
-            resolve(results[0].due);
-          },
-        );
-      });
-      const online_students = await new Promise((resolve, reject) => {
-        connection.query(q3, (err, results) => {
-          if (err) return reject(err);
-          resolve(results[0].online);
-        });
-      });
-      const all_time_issue = await new Promise((resolve, reject) => {
-        connection.query(q4, (err, results) => {
-          if (err) return reject(err);
-          resolve(results[0].all_time_issue);
-        });
-      });
-
-      if (
-        total !== undefined ||
-        issue !== undefined ||
-        student !== undefined ||
-        due !== undefined ||
-        online_students !== undefined ||
-        all_time_issue !== undefined
-      ) {
-        return {
-          success: true,
-          total_books: total,
-          issue_books: issue,
-          total_students: student,
-          due: due,
-          online_students: online_students,
-          all_time_issue: all_time_issue,
-        };
-      } else {
-        return {
-          success: false,
-          error: "Failed to get Data",
-        };
+      if(all_issued_books.data.success && issued_books.data.success && books_count.data.success){
+        return{
+          success:true,
+          data:[
+            total_books_count,
+            total_issued_books_count,
+            all_issued_books_count,
+            total_students_count,
+            online_students_count,
+            overdue_books_count
+          ]
+        }
       }
+      else{
+        return{
+          success:false,
+          message:"Failed To Fetch Data"
+        }
+      }
+      
     } catch (error) {
-      return {
-        success: false,
-        error: error.message || "Database error occurred",
-      };
+      console.log("Error In the getTotalBooks:::",error);
+      return{
+        success:false,
+        message:error.message || "Error To Fetch Data"
+      }
     }
   }
-
   //API Creation And implementation Is Done
   //This Function is being called in the add-book-page.js file at line 112
   async  AddBook(data) {

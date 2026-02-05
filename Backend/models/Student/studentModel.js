@@ -1,10 +1,9 @@
-const connection = require("../db.js");
+
+const axios = require("axios");
 
 class Student {
-  constructor() {
-    this.connection = connection;
-  }
 
+//API implementation is Done
   async updateStudent(student) {
     if (!student) {
       return {
@@ -12,14 +11,56 @@ class Student {
         error: "Student ID is required",
       };
     }
-    const q = `UPDATE \`students\` SET 
-      enrollment_no = ?,
-      name = ?, 
-      email = ?, 
-      department = ?, 
-      year = ?, 
-      phone = ? 
-      WHERE id = ?`;
+    if(!student.id){
+      return {
+        success: false,
+        error: "Student ID is required",
+      };
+    }
+    if(!student.enrollment_no){
+      return {
+        success: false,
+        error: "Student ID is required",
+      };
+    }
+    if(!student.name){
+      return {
+        success: false,
+        error: "Student ID is required",
+      };
+    }
+    if(!student.email){
+      return {
+        success: false,
+        error: "Student ID is required",
+      };
+    }
+    if(!student.department){
+      return {
+        success: false,
+        error: "Student ID is required",
+      };
+    }
+    if(!student.year){
+      return {
+        success: false,
+        error: "Student ID is required",
+      };
+    }
+    if(!student.phone){
+      return {
+        success: false,
+        error: "Student ID is required",
+      };
+    }
+    if(!student.id){
+      return {
+        success: false,
+        error: "Student ID is required",
+      };
+    }
+
+
 
     const data = [
       student.enrollment_no,
@@ -32,25 +73,8 @@ class Student {
     ];
 
     try {
-      return await new Promise((resolve, reject) => {
-        connection.query(q, data, (err, res) => {
-          if (err) {
-            reject(err);
-          } else {
-            if (res.affectedRows === 0) {
-              resolve({
-                success: false,
-                error: "Student not found or no changes made",
-              });
-            } else {
-              resolve({
-                success: true,
-                message: "Student updated successfully",
-              });
-            }
-          }
-        });
-      });
+        const result = await axios.put("http://localhost:2150/api/student/update", data);
+        return result.data;
     } catch (error) {
       return {
         success: false,
@@ -101,6 +125,7 @@ class Student {
     }
   }
 
+  //API Implementation Is Done
   async addStudent(student) {
     let data = Object.values(student);
 
@@ -180,26 +205,30 @@ class Student {
     }
   }
 
-  async getStudentData(ac_no) {
-    let q = `SELECT year , name  FROM \`students\` WHERE enrollment_no = ?`;
-    const term = `${ac_no}`;
+  //API Creation And implementation IS Done 
+  //This Function Is Used To Get The Data Of The Student From The API 
+  //Called In the issue-book-page.js at line 79 just to get the name and the department of the student to issue book
+  async getStudentData(roll_no) {
+    console.log("Roll No :::",roll_no);
+    
     try {
-      let stu_data = await new Promise((resolve, reject) => {
-        connection.query(q, [term], (err, result) => {
-          if (err) reject(err);
-          else resolve(JSON.parse(JSON.stringify(result)));
-        });
-      });
-      if (!stu_data || stu_data.length === 0) {
+      const response = await axios.get(`http://localhost:2150/student/getStudentData/${roll_no}`);
+      console.log("Result :::",response);
+      console.log("Result :::",response.data);
+      
+      const result = response.data;
+      if (result.success) {
         return {
-          success: false,
-          error: "Student not found",
+          success: true,
+          data: result.data,
         };
       }
-      return {
-        success: true,
-        data: stu_data,
-      };
+      else{
+        return {
+          success: false,
+          message: "Stundet Not Found"
+        };
+      }
     } catch (error) {
       return {
         success: false,

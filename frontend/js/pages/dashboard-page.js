@@ -6,20 +6,22 @@ import { showMessage } from "../utils/ui-helpers.js";
 export function initDashboardPage(loadPageCallback) {
   try {
     window.BOOKS.getTotalBooks().then((res) => {
+      console.log("Data",res)
       if (res.success) {
         // Update dashboard statistics
+        localStorage.removeItem("DBERROR");
         document.getElementById("Total_Books").innerText =
-          res.total_books.toLocaleString();
+          res.data[0].toLocaleString();
         document.getElementById("Books_Issued").innerText =
-          res.issue_books.toLocaleString();
-        document.getElementById("Total_Students").innerText =
-          res.total_students.toLocaleString();
-        document.getElementById("Overdue_Books").innerText =
-          res.due.toLocaleString();
-        document.getElementById("Online_Students").innerText =
-          res.online_students.toLocaleString();
+          res.data[1].toLocaleString();
         document.getElementById("All_Time_Books_Issued").innerText =
-          res.all_time_issue.toLocaleString();
+          res.data[2].toLocaleString();
+        document.getElementById("Total_Students").innerText =
+          res.data[3].toLocaleString();
+        document.getElementById("Online_Students").innerText =
+          res.data[4].toLocaleString();
+        document.getElementById("Overdue_Books").innerText =
+          res.data[5].toLocaleString();
 
         // Set up click handlers for dashboard cards
         const container = document.getElementById("overdue_books_details");
@@ -51,7 +53,7 @@ export function initDashboardPage(loadPageCallback) {
         }
       } else {
         localStorage.setItem("DBERROR", res.error);
-
+        
         setTimeout(() => {
           showMessage(
             "error",
