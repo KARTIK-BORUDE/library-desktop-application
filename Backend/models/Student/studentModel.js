@@ -1,66 +1,62 @@
-
 const axios = require("axios");
 
 class Student {
-
-//API implementation is Done
-  async updateStudent(student) {
+  //API implementation is Done
+  async updateStudent(student, token) {
     if (!student) {
       return {
         success: false,
         error: "Student ID is required",
       };
     }
-    if(!student.id){
+    if (!student.id) {
       return {
         success: false,
         error: "Student ID is required",
       };
     }
-    if(!student.enrollment_no){
+    if (!student.enrollment_no) {
       return {
         success: false,
         error: "Student ID is required",
       };
     }
-    if(!student.name){
+    if (!student.name) {
       return {
         success: false,
         error: "Student ID is required",
       };
     }
-    if(!student.email){
+    if (!student.email) {
       return {
         success: false,
         error: "Student ID is required",
       };
     }
-    if(!student.department){
+    if (!student.department) {
       return {
         success: false,
         error: "Student ID is required",
       };
     }
-    if(!student.year){
+    if (!student.year) {
       return {
         success: false,
         error: "Student ID is required",
       };
     }
-    if(!student.phone){
+    if (!student.phone) {
       return {
         success: false,
         error: "Student ID is required",
       };
     }
-    if(!student.id){
+    if (!student.id) {
       return {
         success: false,
         error: "Student ID is required",
       };
     }
-
-
 
     const data = [
       student.enrollment_no,
@@ -73,8 +69,16 @@ class Student {
     ];
 
     try {
-        const result = await axios.put("http://localhost:2150/api/student/update", data);
-        return result.data;
+      const result = await axios.put(
+        "http://localhost:2150/api/student/update",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      return result.data;
     } catch (error) {
       return {
         success: false,
@@ -83,7 +87,7 @@ class Student {
     }
   }
 
-  async searchStudent(term) {
+  async searchStudent(term, token) {
     if (!term) {
       return {
         success: false,
@@ -126,32 +130,53 @@ class Student {
   }
 
   //API Implementation Is Done
-  async addStudent(student) {
-    let data = Object.values(student);
-
-    // Fixed SQL syntax: VALUES needs parentheses around placeholders
-    let q = `INSERT INTO \`students\` (name, enrollment_no, department, year, email, phone) VALUES (?,?,?,?,?,?)`;
-
-    try {
-      let stu = await new Promise((resolve, reject) => {
-        connection.query(q, data, (err, result) => {
-          if (err) reject(err);
-          else resolve(JSON.parse(JSON.stringify(result)));
-        });
-      });
-
-      return {
-        success: true,
-        message: "Student Added Successfully",
-      };
-    } catch (error) {
+  async addStudent(student, token) {
+    if (
+      !student.name ||
+      !student.enrollment_no ||
+      !student.department ||
+      !student.year ||
+      !student.email ||
+      !student.phone
+    ) {
       return {
         success: false,
-        error: error || "Failed to add student from Student Model",
+        error: "All fields are required",
       };
+    } else {
+      console.log("Student :::", student);
+      try {
+        const { data } = await axios.post(
+          "http://localhost:2150/student/addStudent",
+          student,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        console.log("Response :::", data);
+        if (data.success) {
+          return {
+            success: true,
+            message: "Student Added Successfully",
+          };
+        } else {
+          return {
+            success: false,
+            error: data.error || "Failed to add student from Student Model",
+          };
+        }
+      } catch (error) {
+        console.log("Error In Student Model :::", error);
+        return {
+          success: false,
+          error: error.message || "Failed to add student from Student Model",
+        };
+      }
     }
   }
-  async deleteBookOrStudent(book_id, stu_id) {
+  async deleteBookOrStudent(book_id, stu_id, token) {
     let q = `DELETE FROM \`books\` WHERE id = ?`;
     try {
       if (stu_id) {
@@ -205,34 +230,43 @@ class Student {
     }
   }
 
-  //API Creation And implementation IS Done 
-  //This Function Is Used To Get The Data Of The Student From The API 
+  //API Creation And implementation IS Done
+  //This Function Is Used To Get The Data Of The Student From The API
   //Called In the issue-book-page.js at line 79 just to get the name and the department of the student to issue book
-  async getStudentData(roll_no) {
-    console.log("Roll No :::",roll_no);
-    
+  async getStudentData(roll_no, token) {
+    console.log("Roll No :::", roll_no);
+
     try {
-      const response = await axios.get(`http://localhost:2150/student/getStudentData/${roll_no}`);
-      console.log("Result :::",response);
-      console.log("Result :::",response.data);
-      
+      const response = await axios.get(
+        `http://localhost:2150/student/getStudentData/${roll_no}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log("Result :::", response);
+      console.log("Result :::", response.data);
+
       const result = response.data;
       if (result.success) {
         return {
           success: true,
           data: result.data,
         };
-      }
-      else{
+      } else {
         return {
           success: false,
-          message: "Stundet Not Found"
+          message: "Stundet Not Found",
         };
       }
     } catch (error) {
+      console.log("Error In Student Model :::", error.response.status);
       return {
         success: false,
-        error: error || "Failed to get student data from Student Model",
+        message:
+          error.response?.data?.message ||
+          "Failed to get student data from Student Model",
       };
     }
   }

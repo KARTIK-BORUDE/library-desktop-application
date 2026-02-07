@@ -64,6 +64,9 @@ export function initReturnBookPage(loadPageCallback) {
           )
             .toISOString()
             .split("T")[0];
+          // Update book_id and student_id for the selected student
+          book_id = stu.book_id;
+          student_id = stu.student_id;
         }
       });
     };
@@ -85,7 +88,13 @@ export function initReturnBookPage(loadPageCallback) {
           console.log("Data in controller ", res);
 
           // If the data is not found or error occurred, clear the list and show the message
-          if (!res || !res.success || res.error || !res.issuedBooks || res.issuedBooks.length === 0) {
+          if (
+            !res ||
+            !res.success ||
+            res.error ||
+            !res.issuedBooks ||
+            res.issuedBooks.length === 0
+          ) {
             showMessage(
               "error",
               "No Data Found",
@@ -144,6 +153,7 @@ export function initReturnBookPage(loadPageCallback) {
       stu_id: student_id,
       book_id: book_id,
     }).then((res) => {
+      console.log("Result in the fileReturnBook Model ", res);
       if (res.success) {
         return_btn.style.backgroundColor = "#28a745";
         return_btn.textContent = "✓ Returned";

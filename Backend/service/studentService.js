@@ -1,95 +1,91 @@
 const Student = require("../models/Student/studentModel");
 
 class StudentService {
-    constructor() {
-        this.studentModel = new Student();
+  constructor() {
+    this.studentModel = new Student();
+  }
+  async updateStudent(student, token) {
+    if (!student) {
+      return {
+        success: false,
+        error: "Student not found",
+      };
     }
-    async updateStudent(student) {
-        if (!student) {
-            return {
-                success: false,
-                error: "Student not found"
-            }
-        }
-        try {
-            return await this.studentModel.updateStudent(student);
+    try {
+      return await this.studentModel.updateStudent(student, token);
+    } catch (error) {
+      return {
+        success: false,
+        error: error,
+      };
+    }
+  }
 
-        } catch (error) {
-            
-            return {
-                success: false,
-                error: error
-            }
-        }
+  async searchStudent(term, token) {
+    if (!term) {
+      return {
+        success: false,
+        error: "Student not found",
+      };
     }
+    try {
+      return await this.studentModel.searchStudent(term, token);
+    } catch (error) {
+      return {
+        success: false,
+        error: error || "Error in the Student Service",
+      };
+    }
+  }
 
-    async searchStudent(term) {
-        if (!term) {
-            return {
-                success: false,
-                error: "Student not found"
-            }
-        }
-        try {
-            return await this.studentModel.searchStudent(term);
-        } catch (error) {
-            
-            return {
-                success: false,
-                error: error || "Error in the Student Service"
-            }
-        }
+  async addStudent(student, token) {
+    if (!student) {
+      return {
+        success: false,
+        error: "Student not found",
+      };
     }
+    try {
+      return await this.studentModel.addStudent(student, token);
+    } catch (error) {
+      return {
+        success: false,
+        error: error || "Error in the Student Service",
+      };
+    }
+  }
 
-    async addStudent(student) {
-        if (!student) {
-            return {
-                success: false,
-                error: "Student not found"
-            }
-        }
-        try {
-            return await this.studentModel.addStudent(student);
-        }
-        catch (error) {
-            
-            return {
-                success: false,
-                error: error || "Error in the Student Service"
-            }
-        }
+  async deleteBookOrStudent(book_id, stu_id, token) {
+    try {
+      return await this.studentModel.deleteBookOrStudent(
+        book_id,
+        stu_id,
+        token,
+      );
+    } catch (error) {
+      return {
+        success: false,
+        error: error || "Error in the Student Service",
+      };
     }
-    
-    async deleteBookOrStudent(book_id, stu_id) {
-        try {
-            return await this.studentModel.deleteBookOrStudent(book_id, stu_id);
-        }
-        catch (error) {
-            
-            return {
-                success: false,
-                error: error || "Error in the Student Service"
-            }
-        }
-    }
+  }
 
-    async getStudentData(ac_no) {
-        if (!ac_no) {
-            return {
-                success: false,
-                error: "Student not found"
-            }
-        }
-        try {
-            return await this.studentModel.getStudentData(ac_no);
-        } catch (error) {
-            
-            return {
-                success: false,
-                error: error || "Error in the Student Service"
-            }
-        }
+  async getStudentData(ac_no, token) {
+    if (!ac_no) {
+      return {
+        success: false,
+        error: "Student not found",
+      };
     }
+    try {
+      return await this.studentModel.getStudentData(ac_no, token);
+    } catch (error) {
+      return {
+        success: false,
+        error: error || "Error in the Student Service",
+      };
+    }
+  }
 }
 
 module.exports = StudentService;

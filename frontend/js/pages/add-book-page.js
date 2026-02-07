@@ -49,7 +49,7 @@ export function initAddBookPage(loadPageCallback) {
               }, 200);
             } else {
               // Book found - show loader and success message
-              console.log("book Exists::",res)
+              console.log("book Exists::", res);
               showConfirmationPopUp(res.data, loadPageCallback);
             }
           })

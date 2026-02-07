@@ -80,11 +80,11 @@ const XLSX = require("@e965/xlsx");
 const BookService = require("./Backend/service/bookService.js");
 const StudentService = require("./Backend/service/studentService.js");
 const UtilsService = require("./Backend/service/utilsService.js");
+const authService = require("./Backend/service/authService.js");
 const { store } = require("./Backend/models/Books/bookModel.js");
 const validateUser = require("./Backend/auth.cjs");
 const signUser = require("./Backend/signup.cjs");
 const { title } = require("process");
-
 // ============================================================================
 // APPLICATION VARIABLES
 // ============================================================================
@@ -93,6 +93,7 @@ let navigationHistory;
 let All_Book_Data;
 let win;
 let connection;
+let AuthToken;
 const bookService = new BookService();
 const studentService = new StudentService();
 const utilsService = new UtilsService();
@@ -394,12 +395,6 @@ ON DUPLICATE KEY UPDATE
   });
 });
 
-//handling the back history
-ipcMain.handle("go-back", (event) => {
-  if (navigationHistory.canGoBack()) {
-    navigationHistory.goBack();
-  }
-});
 //upload Student From Excel File
 ipcMain.handle("upload-student-from-excel", async (event) => {
   return handleGlobalError(async () => {
@@ -565,7 +560,7 @@ ipcMain.handle("export-books", async () => {
 });
 ipcMain.handle("AddBook", async (event, data) => {
   return handleGlobalError(async () => {
-    return await bookService.AddBook(data);
+    return await bookService.AddBook(data, getToken());
   });
 });
 
@@ -594,13 +589,13 @@ ipcMain.handle("search-student", async (e, term) => {
 
   return handleGlobalError(async () => {
     //executing the query to get the searched data
-    return await studentService.searchStudent(term);
+    return await studentService.searchStudent(term, getToken());
   });
 });
 
 ipcMain.handle("add-student", async (e, student) => {
   return handleGlobalError(async () => {
-    return await studentService.addStudent(student);
+    return await studentService.addStudent(student, getToken());
   });
 });
 
@@ -632,7 +627,7 @@ ipcMain.handle("get-students", async (e) => {
 ipcMain.handle("update-student", async (event, student) => {
   return handleGlobalError(async () => {
     // Validate student data
-    return await studentService.updateStudent(student);
+    return await studentService.updateStudent(student, getToken());
   });
 });
 
@@ -641,7 +636,7 @@ ipcMain.handle("update-student", async (event, student) => {
 //*******UPDATE BOOK ***** */
 ipcMain.handle("update-book", async (event, book) => {
   return handleGlobalError(async () => {
-    return await bookService.updateBook(book);
+    return await bookService.updateBook(book, getToken());
   });
 });
 
@@ -651,7 +646,11 @@ ipcMain.handle("update-book", async (event, book) => {
 
 ipcMain.handle("delete-book-or-student", async (event, book_id, stu_id) => {
   return handleGlobalError(async () => {
-    return await studentService.deleteBookOrStudent(book_id, stu_id);
+    return await studentService.deleteBookOrStudent(
+      book_id,
+      stu_id,
+      getToken(),
+    );
   });
 });
 //===================================
@@ -660,7 +659,8 @@ ipcMain.handle("delete-book-or-student", async (event, book_id, stu_id) => {
 
 ipcMain.handle("issue-book", async (event, issue_book) => {
   return handleGlobalError(async () => {
-    return await bookService.issueBook(issue_book);
+    console.log("Issue Book Data :::", issue_book);
+    return await bookService.issueBook(issue_book, getToken());
   });
 });
 
@@ -668,7 +668,7 @@ ipcMain.handle("issue-book", async (event, issue_book) => {
 
 ipcMain.handle("get-student-data", async (event, ac_no) => {
   return handleGlobalError(async () => {
-    return await studentService.getStudentData(ac_no);
+    return await studentService.getStudentData(ac_no, getToken());
   });
 });
 
@@ -678,7 +678,7 @@ ipcMain.handle("get-issued-books", async (event) => {
   //
 
   return handleGlobalError(async () => {
-    return await bookService.getIssuedBooks();
+    return await bookService.getIssuedBooks(getToken());
   });
 });
 
@@ -741,7 +741,7 @@ ipcMain.handle("calculate-fine", async (event) => {
 
 ipcMain.handle("get-data-of-issued-book", async (event, data) => {
   return handleGlobalError(async () => {
-    return await bookService.getDataOfIssuedBooks(data);
+    return await bookService.getDataOfIssuedBooks(data, getToken());
   });
 });
 
@@ -750,7 +750,7 @@ ipcMain.handle("get-title", async (event, ac_no) => {
   //
   //
 
-  return await bookService.getBookTitle(ac_no);
+  return await bookService.getBookTitle(ac_no, getToken());
 });
 //************************************************************** */
 
@@ -758,7 +758,7 @@ ipcMain.handle("get-title", async (event, ac_no) => {
 
 ipcMain.handle("file-return", async (event, data) => {
   return handleGlobalError(async () => {
-    return await bookService.fileReturnBook(data);
+    return await bookService.fileReturnBook(data, getToken());
   });
 });
 
@@ -771,9 +771,10 @@ function normalizeDate(date) {
 
 ipcMain.handle("login", async (event, username, password) => {
   return handleGlobalError(async () => {
-    let user = await validateUser(username, password);
-
+    let user = await authService.signin(username, password);
+    console.log("user :::: ", user);
     if (user.success) {
+      setToken(user.user.token);
       // win.loadFile("./frontend/html/index.html");
       await setStatus(net.isOnline(), username);
       store.set("current_user", username);
@@ -881,6 +882,22 @@ app.on("second-instance", () => {
 async function setStatus(status, username) {
   return await utilsService.setStatus(status, username);
 }
+
+//Set Token Function This function stores the token in the variable so
+//that it can be used in the API requests
+// Using this approach we can avoid the use of the local storage
+// so that the token will not be leaked
+function setToken(token) {
+  if (token) {
+    AuthToken = token;
+  }
+}
+
+//Get Token Function This function returns the token
+function getToken() {
+  return AuthToken;
+}
+
 app.on("window-all-closed", async () => {
   // Set user status to offline before quitting
   const currentUser = store.get("current_user");
@@ -893,7 +910,6 @@ app.on("window-all-closed", async () => {
 
   // Quit the app (except on macOS where apps stay open)
   if (process.platform !== "darwin") {
-    
     app.quit();
   }
 });

@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const { app } = require("electron");
+const bcrypt = require("bcryptjs");
+const connection = require("./models/db");
 
 // Path to config.json (outside EXE)
 const configPath = path.join(app.getPath("userData"), "config.json");
@@ -22,8 +24,7 @@ try {
   );
 }
 
-const bcrypt = require("bcryptjs");
-const connection = require("./models/db");
+
 
 let papper = config.PASSWORD_PAPPER;
 async function validateUser(username, password) {
