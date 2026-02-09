@@ -95,11 +95,7 @@ export function initReturnBookPage(loadPageCallback) {
             !res.issuedBooks ||
             res.issuedBooks.length === 0
           ) {
-            showMessage(
-              "error",
-              "No Data Found",
-              "No issued book found with this accession number",
-            );
+            showMessage("error", "Error", `${res.message}`);
             list.innerHTML = "<option value=''>Select Student</option>";
             document.getElementById("title").value = "";
             document.getElementById("stu_nm").value = "";
@@ -154,6 +150,10 @@ export function initReturnBookPage(loadPageCallback) {
       book_id: book_id,
     }).then((res) => {
       console.log("Result in the fileReturnBook Model ", res);
+      if (!res.success) {
+        showMessage("error", "Error", res.message);
+        return;
+      }
       if (res.success) {
         return_btn.style.backgroundColor = "#28a745";
         return_btn.textContent = "✓ Returned";

@@ -27,6 +27,24 @@ export function initAddBookPage(loadPageCallback) {
     purchaseDateInput.setAttribute("max", today);
   }
 
+  // Is WindUp toggle handler
+  const isWindUpSelect = document.getElementById("is_windup");
+  const windUpByContainer = document.getElementById("windup_by_container");
+  const windUpBySelect = document.getElementById("windup_by");
+
+  if (isWindUpSelect && windUpByContainer && windUpBySelect) {
+    isWindUpSelect.addEventListener("change", (e) => {
+      if (e.target.value === "Yes") {
+        windUpByContainer.style.display = "block";
+        windUpBySelect.required = true;
+      } else {
+        windUpByContainer.style.display = "none";
+        windUpBySelect.required = false;
+        windUpBySelect.value = "";
+      }
+    });
+  }
+
   // Accession number check
   const acc_input = document.getElementById("Accession_no");
   if (acc_input) {
@@ -94,6 +112,9 @@ export function initAddBookPage(loadPageCallback) {
         ),
         Department: document.getElementById("department").value,
         Cost: Number(document.getElementById("Cost").value),
+        is_lost: document.getElementById("is_lost").value,
+        is_windup: document.getElementById("is_windup").value,
+        windup_by: document.getElementById("windup_by").value || null,
       };
 
       // Validate form

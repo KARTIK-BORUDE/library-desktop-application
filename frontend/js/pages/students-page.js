@@ -40,12 +40,15 @@ export async function initStudentsPage(loadPageCallback) {
   //   });
   //   displayStudents(data, loadPageCallback);
   // stu_data.success = false;
-  if (!stu_data.success) {
-    showMessage("error", "Failed to Fetch Students Data ", stu_data.error);
+  console.log("Studnet Data", stu_data);
+  if (!stu_data.data.success) {
+    showMessage("error", "Error", stu_data.data.message);
     return;
   }
 
-  const csStudents = stu_data.data.filter((data) => data.Department === "CO");
+  const csStudents = stu_data.data.data.filter(
+    (data) => data.Department === "CO",
+  );
   //only passing the data of the computer science students to the displayStudents function
   // here apssing thee array of the data get from the database to the displayStudents function
   displayStudents(csStudents, loadPageCallback);

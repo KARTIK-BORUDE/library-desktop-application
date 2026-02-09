@@ -4,7 +4,7 @@ class Auth {
   constructor() {
     this.baseUrl = "http://localhost:2150";
   }
-  async signin(username, password) {
+  async signIn(username, password) {
     try {
       const response = await axios.post(`${this.baseUrl}/auth/sign-in`, {
         username,
@@ -16,7 +16,24 @@ class Auth {
       console.log("Response In Auth Model :::", response);
     } catch (error) {
       console.error("Error in login:", error);
-      return { success: false, message: "Login Failed" };
+      return { success: false, message: error.response.data.message };
+    }
+  }
+
+  async signup(username, password) {
+    try {
+      const { data } = await axios.post(`${this.baseUrl}/auth/sign-up`, {
+        username,
+        password,
+      });
+      if (data.success) {
+        return data;
+      } else {
+        return { success: false, message: data.message };
+      }
+    } catch (error) {
+      console.error("Error in signup:", error.response.data.message);
+      return { success: false, message: error.response.data.message };
     }
   }
 }

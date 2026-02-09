@@ -52,6 +52,47 @@ export function initEditBookPage(loadPageCallback) {
           ? currentBookData.Purchase_Date.split("T")[0]
           : "";
 
+      // Populate new fields
+      const isLostSelect = document.getElementById("is_lost");
+      const isWindUpSelect = document.getElementById("is_windup");
+      const windUpByContainer = document.getElementById("windup_by_container");
+      const windUpBySelect = document.getElementById("windup_by");
+
+      if (isLostSelect)
+        isLostSelect.value = currentBookData.isLost === 1 ? "Yes" : "No";
+
+      if (isWindUpSelect) {
+        isWindUpSelect.value = currentBookData.windUp === 1 ? "Yes" : "No";
+        // Trigger generic change event to handle visibility
+      }
+
+      if (windUpBySelect) {
+        windUpBySelect.value = currentBookData.windUpBy || "";
+      }
+
+      // Handle WindUp visibility based on initial value
+      if (currentBookData.windUp === 1) {
+        windUpByContainer.style.display = "block";
+        windUpBySelect.required = true;
+      } else {
+        windUpByContainer.style.display = "none";
+        windUpBySelect.required = false;
+      }
+
+      // Add event listener for WindUp toggle
+      if (isWindUpSelect) {
+        isWindUpSelect.addEventListener("change", (e) => {
+          if (e.target.value === "Yes") {
+            windUpByContainer.style.display = "block";
+            windUpBySelect.required = true;
+          } else {
+            windUpByContainer.style.display = "none";
+            windUpBySelect.required = false;
+            windUpBySelect.value = "";
+          }
+        });
+      }
+
       localStorage.removeItem("bookData");
       showMessage("success", "Book Loaded", `Editing ${currentBookData.Title}`);
     } catch (error) {
@@ -96,6 +137,9 @@ export function initEditBookPage(loadPageCallback) {
             ) || 1,
           Bill_date: document.getElementById("Bill_date").value,
           Purchase_Date: document.getElementById("Purchase_Date").value,
+          is_lost: document.getElementById("is_lost").value,
+          is_windup: document.getElementById("is_windup").value,
+          windup_by: document.getElementById("windup_by").value || null,
         };
 
         update_btn.disabled = true;

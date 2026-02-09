@@ -31,6 +31,14 @@ export function validateBookForm(bookData) {
     }
   }
 
+  // Conditional validation for Wind Up By
+  if (
+    bookData.is_windup === "Yes" &&
+    (!bookData.windup_by || String(bookData.windup_by).trim() === "")
+  ) {
+    errors.push("Wind Up By is required");
+  }
+
   return {
     isValid: errors.length === 0,
     errors,

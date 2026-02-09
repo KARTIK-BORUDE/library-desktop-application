@@ -4,6 +4,7 @@ const Store = require("electron-store");
 // Use a different filename to avoid conflict with config.json
 const store = new Store({ name: "app-data" });
 const axios = require("axios");
+const { response } = require("express");
 
 class Book {
   /**
@@ -305,10 +306,13 @@ class Book {
         message: data.message,
       };
     } catch (error) {
-      console.log("Error In The updateBook Model ", error);
+      console.log(
+        "Error In The updateBook Model ",
+        error.response.data.message,
+      );
       return {
         success: false,
-        message: error.message || "Falied To Update The Book",
+        message: error.response.data.message || "Falied To Update The Book",
       };
     }
   }
@@ -468,10 +472,10 @@ class Book {
         };
       }
     } catch (error) {
-      console.log("Error in getIssuedBooks", error);
+      console.log("Error in getIssuedBooks", error.response.data.message);
       return {
         success: false,
-        error: error.message || "Error ::::",
+        error: error.response.data.message || "Error",
       };
     }
   }
@@ -479,7 +483,7 @@ class Book {
   //API Creation And Implementation Is DONE
   async getDataOfIssuedBooks(accession_no, token) {
     try {
-      const result = await axios.get(
+      const { data } = await axios.get(
         `http://localhost:2150/books/getDataOfIssuedBooks/${accession_no}`,
         {
           headers: {
@@ -487,18 +491,24 @@ class Book {
           },
         },
       );
-      console.log("Result", result);
-      if (result.data.data.success) {
+      console.log("Result", data);
+      if (data.success) {
         return {
           success: true,
-          issuedBooks: result.data.data.issuedBooks,
+          issuedBooks: data.issuedBooks,
+          message: data.message,
         };
       }
     } catch (error) {
-      console.log("Error In the getDataOfIssuedBooks ::", error);
+      console.log(
+        "Error In the getDataOfIssuedBooks ::",
+        error.response.data.message,
+      );
       return {
         success: false,
-        message: error.message || "Error in API Of the getDataOfIssuedBooks",
+        message:
+          error.response.data.message ||
+          "Error in API Of the getDataOfIssuedBooks",
       };
     }
   }

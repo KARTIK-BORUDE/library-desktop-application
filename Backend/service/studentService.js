@@ -86,6 +86,16 @@ class StudentService {
       };
     }
   }
+  async getAllStudentsData(token) {
+    try {
+      return await this.studentModel.getAllStudentsData(token);
+    } catch (error) {
+      return {
+        success: false,
+        error: error || "Error in the Student Service",
+      };
+    }
+  }
 }
 
 module.exports = StudentService;

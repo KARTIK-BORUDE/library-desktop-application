@@ -600,16 +600,11 @@ ipcMain.handle("add-student", async (e, student) => {
 });
 
 ipcMain.handle("get-students", async (e) => {
-  let q = `select * from \`students\``;
   return handleGlobalError(async () => {
     //executing the query to get Students Data
     //using promise to handle the async function
-    let stu_data = await new Promise((resolve, reject) => {
-      connection.query(q, (err, result) => {
-        if (err) reject(err);
-        else resolve(JSON.parse(JSON.stringify(result)));
-      });
-    });
+    let stu_data = await studentService.getAllStudentsData(getToken());
+    console.log("Student Data in Main : ", stu_data);
     return {
       success: true,
       data: stu_data,
@@ -771,7 +766,7 @@ function normalizeDate(date) {
 
 ipcMain.handle("login", async (event, username, password) => {
   return handleGlobalError(async () => {
-    let user = await authService.signin(username, password);
+    let user = await authService.signIn(username, password);
     console.log("user :::: ", user);
     if (user.success) {
       setToken(user.user.token);
@@ -795,12 +790,12 @@ ipcMain.handle("login", async (event, username, password) => {
 //*******Handling the Signup *********/
 ipcMain.handle("signup", async (event, username, password) => {
   return handleGlobalError(async () => {
-    let user = await signUser(username, password);
-
+    let user = await authService.signUser(username, password);
+    console.log("User In SIgnup", user);
     if (user.success) {
       win.loadFile("./frontend/html/index.html");
       await setStatus(net.isOnline(), username);
-      store.set("current_user", username);
+      // store.set("current_user", username);
 
       return {
         success: true,

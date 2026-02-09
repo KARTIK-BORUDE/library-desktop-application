@@ -86,6 +86,32 @@
                         </div>
                     </div>
 
+                    <!-- Is Lost, Is WindUp, Wind Up By -->
+                    <div class="row mb-3 mt-3">
+                        <div class="mb-3 col-md-4">
+                            <label for="is_lost" class="form-label">Is Lost</label>
+                            <select id="is_lost" class="form-select">
+                                <option value="No" selected>No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label for="is_windup" class="form-label">Is WindUp</label>
+                            <select id="is_windup" class="form-select">
+                                <option value="No" selected>No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-md-4" id="windup_by_container" style="display: none;">
+                            <label for="windup_by" class="form-label">Wind Up By</label>
+                            <select id="windup_by" class="form-select">
+                                <option value="" selected disabled>Select Person</option>
+                                <option value="sanchalak">Sanchalak</option>
+                                <option value="sahsanchalak">Sahsanchalak</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <hr style="margin-top: 20px; margin-bottom: 20px;">
 
                     <!-- ========== NUMBER FIELDS ========== -->

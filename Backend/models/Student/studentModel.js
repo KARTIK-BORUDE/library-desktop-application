@@ -168,10 +168,12 @@ class Student {
           };
         }
       } catch (error) {
-        console.log("Error In Student Model :::", error);
+        console.log("Error In Student Model :::", error.response.data.message);
         return {
           success: false,
-          error: error.message || "Failed to add student from Student Model",
+          error:
+            error.response.data.message ||
+            "Failed to add student from Student Model",
         };
       }
     }
@@ -250,6 +252,42 @@ class Student {
 
       const result = response.data;
       if (result.success) {
+        return {
+          success: true,
+          data: result.data,
+        };
+      } else {
+        return {
+          success: false,
+          message: "Stundet Not Found",
+        };
+      }
+    } catch (error) {
+      console.log("Error In Student Model :::", error.response.status);
+      return {
+        success: false,
+        message:
+          error.response?.data?.message ||
+          "Failed to get student data from Student Model",
+      };
+    }
+  }
+
+  async getAllStudentsData(token) {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:2150/student/getAllStudentsData`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      console.log("Result :::", data);
+
+      const result = data;
+      if (data.success) {
         return {
           success: true,
           data: result.data,

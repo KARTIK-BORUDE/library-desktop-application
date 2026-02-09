@@ -28,6 +28,12 @@ export function initReturnPage(loadPageCallback) {
     if (!res.data || res.data.length === 0) {
       tbody.innerHTML =
         "<tr><td colspan='8' style='text-align: center;'><b> No Issued Books Found</b> </td></tr>";
+      // showMessage("error", "Error", res.error);
+    }
+    if (res.success === false) {
+      showMessage("error", "Error", res.error);
+      tbody.innerHTML =
+        "<tr><td colspan='8' style='text-align: center;'><b>Unauthorized To Access This Page</b> </td></tr>";
     } else {
       tbody.innerHTML = "";
       res.data.forEach((book) => {
